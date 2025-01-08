@@ -11,10 +11,6 @@ name: x86-x64-6.x-精简版
 on:
   repository_dispatch:
   workflow_dispatch:
-  # schedule:
-    # - cron: 0 17 * * *
-  # watch:
-  #   types: started
 
 env:
   REPO_URL: https://github.com/DHDAXCW/lede-rockchip
@@ -22,13 +18,13 @@ env:
   CONFIG_FILE: configs/lean/simplify.config
   DIY_SH: scripts/simplify.sh
   KMODS_IN_FIRMWARE: true
-  UPLOAD_WETRANSFER: false #上传到WeTransfer
+  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # 修改为 ubuntu-latest
     outputs:
       OPENWRTROOT: ${{ steps.update.outputs.OPENWRTROOT }}
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
@@ -40,7 +36,29 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-        
+
+    - name: Install build dependencies  # 添加安装依赖的步骤
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          git \
+          gcc \
+          g++ \
+          ncurses-dev \
+          libssl-dev \
+          libncurses5-dev \
+          zlib1g-dev \
+          gawk \
+          flex \
+          gettext \
+          wget \
+          unzip \
+          python3 \
+          python3-distutils \
+          libtool \
+          libxml2-utils
+
     - name: Clone Source Code
       run: |
         df -hT $PWD
