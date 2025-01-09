@@ -57,7 +57,8 @@ jobs:
           python3 \
           python3-distutils \
           libtool \
-          libxml2-utils
+          libxml2-utils \
+          pkg-config  # 可能缺少的依赖
 
     - name: Clone Source Code
       run: |
